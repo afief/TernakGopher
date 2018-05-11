@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"flag"
 	"fmt"
 	"math/rand"
 	"strconv"
@@ -11,7 +12,21 @@ import (
 const length = 16
 
 func main() {
-	fmt.Println(generate(""))
+	visa := flag.Bool("visa", false, "Generate Visa Credit Card Number")
+	master := flag.Bool("master", true, "Generate Master Creedit Card Number")
+	toValidate := flag.String("validate", "", "Validate existing credit card number")
+	flag.Parse()
+
+	generated := ""
+	if *toValidate != "" {
+		fmt.Println(validate(*toValidate))
+	} else if *visa {
+		generated = generate("4")
+	} else if *master {
+		generated = generate("54")
+	}
+
+	fmt.Println(generated)
 }
 
 func generate(bin string) string {
@@ -27,7 +42,7 @@ func generate(bin string) string {
 
 	result.WriteString(getLuhnChecksum(result.String()))
 
-	return splitter(result.String())
+	return addDash(result.String())
 }
 
 func getLuhnChecksum(card string) string {
@@ -50,7 +65,7 @@ func getLuhnChecksum(card string) string {
 	return strconv.Itoa((10 - (sum % 10)) % 10)
 }
 
-func splitter(card string) string {
+func addDash(card string) string {
 	var result bytes.Buffer
 	for i := 0; i < len(card); i++ {
 		if i > 0 && (i%4) == 0 {
@@ -59,4 +74,40 @@ func splitter(card string) string {
 		result.WriteString(string(card[i]))
 	}
 	return result.String()
+}
+
+func removeDash(card string) string {
+	var result bytes.Buffer
+	for i := 0; i < len(card); i++ {
+		if string(card[i]) != "-" {
+			result.WriteString(string(card[i]))
+		}
+	}
+	return result.String()
+}
+
+func validate(dashedCard string) bool {
+	card := removeDash(dashedCard)
+
+	checksum := 0
+	for i := 2 - (len(card) % 2); i <= len(card); i += 2 {
+		nc, _ := strconv.Atoi(string(card[i-1]))
+		checksum += nc
+	}
+
+	for i := (len(card) % 2) + 1; i < len(card); i += 2 {
+		digit, _ := strconv.Atoi(string(card[i-1]))
+		digit *= 2
+
+		if digit < 10 {
+			checksum += digit
+		} else {
+			checksum += digit - 9
+		}
+	}
+
+	if (checksum % 10) == 0 {
+		return true
+	}
+	return false
 }
