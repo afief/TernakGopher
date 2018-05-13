@@ -1,2 +1,8 @@
-ternakgopher
+/ternakgopher
 
+# Vendor is managed by dep
+vendor/
+
+# IDE files
+.idea/
+.vscode/

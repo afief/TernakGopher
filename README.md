@@ -5,7 +5,7 @@
 
 #### Build
 ```
-go build
+make all
 ```
 
 #### Generate Master Card Number
