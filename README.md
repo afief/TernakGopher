@@ -1,8 +1,6 @@
 # Ternak ~Lele~ Gopher
 #### Credit Card Generator and Validator
 
-!["Gopher"](https://cdn-images-1.medium.com/max/1600/1*i2skbfmDsHayHhqPfwt6pA.png "Gopher")
-
 #### Build
 ```
 make all
@@ -22,3 +20,5 @@ make all
 ```
 ./ternakgopher -validate [cc-number]
 ```
+
+!["Gopher"](https://cdn-images-1.medium.com/max/1600/1*i2skbfmDsHayHhqPfwt6pA.png "Gopher")
