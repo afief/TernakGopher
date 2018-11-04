@@ -1,7 +1,7 @@
 # Ternak ~Lele~ Gopher
 #### Credit Card Generator and Validator
 
-Version 1.0.2
+Version 1.0.1
 
 #### Build
 ```
